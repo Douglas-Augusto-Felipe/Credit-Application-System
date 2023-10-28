@@ -5,7 +5,6 @@ import me.dio.credit.applitcation.system.reporsitory.CreditRepository
 import me.dio.credit.applitcation.system.service.ICreditService
 import java.lang.RuntimeException
 import java.util.*
-import kotlin.RuntimeException
 
 class CreditService(
     private val creditRepository: CreditRepository, private val custumerService: CustumerService
