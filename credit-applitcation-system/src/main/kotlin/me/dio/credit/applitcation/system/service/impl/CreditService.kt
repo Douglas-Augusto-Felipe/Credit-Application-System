@@ -14,9 +14,8 @@ class CreditService(
         return this.creditRepository.save(credit)
     }
 
-    override fun findAllByCustumer(custumerId: Long): List<Credit> {
-        TODO("Not yet implemented")
-    }
+    override fun findAllByCustumer(custumerId: Long): List<Credit> =
+        this.creditRepository.findAllByCustumer(custumerId)
 
     override fun findByCreditCode(custumerId: Long, creditCode: UUID): Credit {
         val credit: Credit = (this.creditRepository.findByCreditCode(creditCode)
