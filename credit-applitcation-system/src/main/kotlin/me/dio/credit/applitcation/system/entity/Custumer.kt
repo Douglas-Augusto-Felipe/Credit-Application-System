@@ -14,7 +14,7 @@ data class Custumer(
     var lastname: String = "",
 
     @Column(nullable = false, unique = true)
-    val cpf: String = "",
+    var cpf: String = "",
 
     @Column(nullable = false, unique = true)
     var email: String = "",
