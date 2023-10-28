@@ -1,7 +1,12 @@
 package me.dio.credit.applitcation.system.controller
 
 import me.dio.credit.applitcation.system.dto.CustumerDto
+import me.dio.credit.applitcation.system.dto.CustumerView
+import me.dio.credit.applitcation.system.entity.Custumer
 import me.dio.credit.applitcation.system.service.impl.CustumerService
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -15,8 +20,19 @@ class CustumerResource(
 ) {
 
     @PostMapping
-    fun saveCustumer(@RequestBody custumerDto: CustumerDto): String{
+    fun saveCustumer(@RequestBody custumerDto: CustumerDto): String {
         val savedCustumer = this.custumerService.save(custumerDto.toEntity())
         return "Custumer ${savedCustumer.email} saved!"
     }
+
+    @GetMapping("/{id}")
+    fun findById(@PathVariable id: Long): CustumerView {
+        val custumer: Custumer = this.custumerService.findById(id)
+        return CustumerView(custumer)
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteCustumer(@PathVariable id: Long) =
+        this.custumerService.delete(id)
+
 }
