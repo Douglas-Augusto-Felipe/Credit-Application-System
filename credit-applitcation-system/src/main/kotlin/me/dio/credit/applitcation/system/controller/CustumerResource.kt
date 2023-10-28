@@ -5,6 +5,8 @@ import me.dio.credit.applitcation.system.dto.CustumerUpdateDto
 import me.dio.credit.applitcation.system.dto.CustumerView
 import me.dio.credit.applitcation.system.entity.Custumer
 import me.dio.credit.applitcation.system.service.impl.CustumerService
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -23,15 +25,15 @@ class CustumerResource(
 ) {
 
     @PostMapping
-    fun saveCustumer(@RequestBody custumerDto: CustumerDto): String {
+    fun saveCustumer(@RequestBody custumerDto: CustumerDto):ResponseEntity<String> {
         val savedCustumer = this.custumerService.save(custumerDto.toEntity())
-        return "Custumer ${savedCustumer.email} saved!"
+        return ResponseEntity.status(HttpStatus.CREATED).body( "Custumer ${savedCustumer.email} saved!")
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: Long): CustumerView {
+    fun findById(@PathVariable id: Long): ResponseEntity<CustumerView> {
         val custumer: Custumer = this.custumerService.findById(id)
-        return CustumerView(custumer)
+        return ResponseEntity.status(HttpStatus.OK).body(CustumerView(custumer))
     }
 
     @DeleteMapping("/{id}")
@@ -42,11 +44,11 @@ class CustumerResource(
     fun updateCustumer(
         @RequestParam(value = "custumerId") id: Long,
         @RequestBody custumerUpdateDto: CustumerUpdateDto
-    ): CustumerView {
+    ): ResponseEntity<CustumerView> {
        val custumer:Custumer = this.custumerService.findById(id)
         val custumerUpdate: Custumer = custumerUpdateDto.toEntity(custumer)
         val custumerUpdated: Custumer = this.custumerService.save(custumerUpdate)
-        return CustumerView(custumerUpdated)
+        return ResponseEntity.status(HttpStatus.OK).body(CustumerView(custumerUpdated))
     }
 
 }
