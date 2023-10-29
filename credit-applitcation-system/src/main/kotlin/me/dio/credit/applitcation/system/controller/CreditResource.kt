@@ -7,14 +7,8 @@ import me.dio.credit.applitcation.system.entity.Credit
 import me.dio.credit.applitcation.system.service.impl.CreditService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import org.springframework.web.bind.annotation.*
+import java.util.*
 import java.util.stream.Collectors
 
 @RestController
@@ -37,7 +31,7 @@ class CreditResource(
         return ResponseEntity.status(HttpStatus.OK).body(creditViewList)
     }
 
-    @GetMapping("/creditCode}")
+    @GetMapping("/{creditCode}")
     fun findByCreditCode(
         @RequestParam(value = "custumerId") custumerId: Long, @PathVariable creditCode: UUID
     ): ResponseEntity<CreditView> {
