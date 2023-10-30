@@ -4,24 +4,20 @@ import me.dio.credit.applitcation.system.entity.Custumer
 import me.dio.credit.applitcation.system.exception.BusinessException
 import me.dio.credit.applitcation.system.reporsitory.CustumerRepository
 import me.dio.credit.applitcation.system.service.ICustumerService
-import org.springframework.stereotype.Service
+import java.lang.RuntimeException
 
-@Service
 class CustumerService(
     private val custumerRepository: CustumerRepository
-) : ICustumerService {
+): ICustumerService {
     override fun save(custumer: Custumer): Custumer =
         this.custumerRepository.save(custumer)
 
 
     override fun findById(id: Long): Custumer =
-        this.custumerRepository.findById(id).orElseThrow {
+        this.custumerRepository.findById(id).orElseThrow{
             throw BusinessException("Id $id not found")
         }
 
-
-    override fun delete(id: Long) {
-        val custumer: Custumer = this.findById(id)
-        this.custumerRepository.delete(custumer)
-    }
+    override fun delete(id: Long) =
+        this.custumerRepository.deleteById(id)
 }
