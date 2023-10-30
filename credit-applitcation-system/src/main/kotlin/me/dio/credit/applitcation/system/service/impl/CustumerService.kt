@@ -4,8 +4,9 @@ import me.dio.credit.applitcation.system.entity.Custumer
 import me.dio.credit.applitcation.system.exception.BusinessException
 import me.dio.credit.applitcation.system.reporsitory.CustumerRepository
 import me.dio.credit.applitcation.system.service.ICustumerService
+import org.springframework.stereotype.Service
 import java.lang.RuntimeException
-
+@Service
 class CustumerService(
     private val custumerRepository: CustumerRepository
 ): ICustumerService {
