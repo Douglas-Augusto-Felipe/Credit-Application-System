@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
+  <component name="AdditionalModuleElements">
+    <content url="file://$MODULE_DIR$/../../credit-applitcation-system/src/test" dumb="true">
+      <sourceFolder url="file://$MODULE_DIR$/../../credit-applitcation-system/src/test/resources" type="java-test-resource" />
+    </content>
+  </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="00b6b3fb-8704-46c4-bae6-9578266e1ca7" />
   </component>

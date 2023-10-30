@@ -1,0 +1,79 @@
+package me.dio.credit.applitcation.system.service
+
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.verify
+import me.dio.credit.applitcation.system.entity.Address
+import me.dio.credit.applitcation.system.entity.Custumer
+import me.dio.credit.applitcation.system.reporsitory.CustumerRepository
+import me.dio.credit.applitcation.system.service.impl.CustumerService
+import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.test.context.ActiveProfiles
+import java.math.BigDecimal
+import java.util.*
+
+@ActiveProfiles("test")
+@ExtendWith(MockKExtension::class)
+class CustumerServiceTest {
+    @MockK
+    lateinit var custumerRepository: CustumerRepository
+
+    @InjectMockKs
+    lateinit var custumerService: CustumerService
+
+    @Test
+    fun shouldCreateCustumer() {
+        //given
+        val fakeCustumer: Custumer = buildCustumer()
+        every { custumerRepository.save(any()) } returns fakeCustumer
+        //when
+        val actual: Custumer = custumerService.save(fakeCustumer)
+        //then
+        Assertions.assertThat(actual).isNotNull
+        Assertions.assertThat(actual).isSameAs(fakeCustumer)
+        verify(exactly = 1){custumerRepository.save(fakeCustumer)}
+    }
+
+    @Test
+    fun shouldFindCustumerById(){
+        //given
+        val fakeId:Long = Random().nextLong()
+        val fakeCustumer: Custumer = buildCustumer(id = fakeId)
+        every { custumerRepository.findById(fakeId) }returns Optional.of(fakeCustumer)
+        //when
+        val actual: Custumer = custumerService.findById(fakeId)
+
+        //then
+        Assertions.assertThat(actual).isNotNull
+        Assertions.assertThat(actual).isExactlyInstanceOf(Custumer::class.java)
+        Assertions.assertThat(actual).isSameAs(fakeCustumer)
+        verify(exactly = 1){custumerRepository.findById(fakeId)}
+
+
+    }
+
+    private fun buildCustumer(
+        firstName: String = "Douglas",
+        lastName: String = "Souza",
+        cpf: String = "905.886.858-36",
+        email: String = "douglas.full.ti@gmail.com",
+        password: String = "1234",
+        zipCode: String = "13245",
+        street: String = "123456",
+        income: BigDecimal = BigDecimal.valueOf(1000.0),
+        id: Long = 1L
+    ) = Custumer(
+        firstname = firstName,
+        lastname = lastName,
+        cpf = cpf,
+        email = email,
+        password = password,
+        address = Address(zipcode = zipCode, street = street),
+        income = income,
+        id = id
+    )
+}
