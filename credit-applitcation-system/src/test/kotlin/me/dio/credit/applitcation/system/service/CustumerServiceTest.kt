@@ -7,6 +7,7 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.verify
 import me.dio.credit.applitcation.system.entity.Address
 import me.dio.credit.applitcation.system.entity.Custumer
+import me.dio.credit.applitcation.system.exception.BusinessException
 import me.dio.credit.applitcation.system.reporsitory.CustumerRepository
 import me.dio.credit.applitcation.system.service.impl.CustumerService
 import org.assertj.core.api.Assertions
@@ -26,7 +27,7 @@ class CustumerServiceTest {
     lateinit var custumerService: CustumerService
 
     @Test
-    fun shouldCreateCustumer() {
+    fun `should create custumer`() {
         //given
         val fakeCustumer: Custumer = buildCustumer()
         every { custumerRepository.save(any()) } returns fakeCustumer
@@ -39,7 +40,7 @@ class CustumerServiceTest {
     }
 
     @Test
-    fun shouldFindCustumerById(){
+    fun `should find custumer by id`(){
         //given
         val fakeId:Long = Random().nextLong()
         val fakeCustumer: Custumer = buildCustumer(id = fakeId)
@@ -54,6 +55,19 @@ class CustumerServiceTest {
         verify(exactly = 1){custumerRepository.findById(fakeId)}
 
 
+    }
+
+    @Test
+    fun `should not find Custumer by invalid id and throw Business Exception`(){
+        //given
+        val fakeId:Long = Random().nextLong()
+        every { custumerRepository.findById(fakeId) }returns Optional.empty()
+        //when
+        //then
+        Assertions.assertThatExceptionOfType(BusinessException::class.java)
+            .isThrownBy { custumerService.findById(fakeId) }
+            .withMessage("Id $fakeId not found")
+        verify(exactly = 1) { custumerRepository.findById(fakeId) }
     }
 
     private fun buildCustumer(
