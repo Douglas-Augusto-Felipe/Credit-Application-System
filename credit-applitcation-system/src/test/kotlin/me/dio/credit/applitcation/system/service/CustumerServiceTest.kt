@@ -4,6 +4,8 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.just
+import io.mockk.runs
 import io.mockk.verify
 import me.dio.credit.applitcation.system.entity.Address
 import me.dio.credit.applitcation.system.entity.Custumer
@@ -68,6 +70,20 @@ class CustumerServiceTest {
             .isThrownBy { custumerService.findById(fakeId) }
             .withMessage("Id $fakeId not found")
         verify(exactly = 1) { custumerRepository.findById(fakeId) }
+    }
+
+    @Test
+    fun `should delete custumer by id`(){
+        //given
+        val fakeId:Long = Random().nextLong()
+        val fakeCustumer: Custumer = buildCustumer(id = fakeId)
+        every { custumerRepository.findById(fakeId) }returns Optional.of(fakeCustumer)
+        every { custumerRepository.delete(fakeCustumer) } just runs
+        //when
+        custumerService.delete(fakeId)
+        //then
+        verify(exactly = 1) { custumerRepository.findById(fakeId) }
+        verify(exactly = 1) { custumerRepository.delete(fakeCustumer) }
     }
 
     private fun buildCustumer(
